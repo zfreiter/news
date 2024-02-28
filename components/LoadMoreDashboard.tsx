@@ -29,8 +29,8 @@ export default function LoadMore({ email }: { email: string }) {
 
       const data = await response.json();
 
-      setPosts([...posts, ...data]);
-      setPage(page + 1);
+      setPosts((prevPosts) => [...prevPosts, ...data]);
+      setPage((prevPage) => prevPage + 1);
       if (data.length === 0) {
         setFinished(true);
       }
@@ -38,7 +38,7 @@ export default function LoadMore({ email }: { email: string }) {
     if (inView) {
       seachTitles(page.toString());
     }
-  }, [inView]);
+  }, [inView, email, page, posts]);
 
   return (
     <>

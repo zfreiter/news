@@ -25,6 +25,12 @@ export async function GET(req: NextRequest, { params }: { params: { email: strin
         },
       },
       include: {
+        author: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
         likes: true,
         comments: true,
       },

@@ -37,7 +37,7 @@ export default async function page() {
   if (email) {
     authorPosts = await getPosts(email);
   }
-
+  console.log(authorPosts[0].author);
   return (
     <main className='mt-6'>
       {authorPosts && authorPosts.length > 0 ? (

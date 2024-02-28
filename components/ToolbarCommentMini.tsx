@@ -16,11 +16,12 @@ type Props = {
 export default function ToolbarMini({ editor, postId }: Props) {
   const [empty, setEmpty] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const editorStrLen = editor?.getHTML().length;
   const router = useRouter();
 
   useEffect(() => {
     setEmpty(editor ? editor.getHTML().length : null);
-  }, [editor?.getHTML().length]);
+  }, [editorStrLen, editor]);
 
   if (!editor) return null;
 

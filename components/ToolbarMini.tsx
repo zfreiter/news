@@ -25,11 +25,12 @@ export default function ToolbarMini({
 }: Props) {
   const [empty, setempty] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const editorStrLen = editor?.getHTML().length;
   const router = useRouter();
 
   useEffect(() => {
     setempty(editor ? editor.getHTML().length : null);
-  }, [editor?.getHTML().length]);
+  }, [editorStrLen, editor]);
 
   if (!editor) return null;
 

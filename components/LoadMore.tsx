@@ -22,7 +22,7 @@ export default function LoadMore({ query }: { query: string }) {
         ? `/api/search/?query=${query}&page=${currentPage}`
         : `/api/posts/?page=${currentPage}`;
 
-      const response = await fetch(url,{cache: 'no-cache'});
+      const response = await fetch(url, { cache: 'no-cache' });
 
       if (!response.ok) {
         console.error(`Error: ${response.status}`);
@@ -31,8 +31,8 @@ export default function LoadMore({ query }: { query: string }) {
 
       const data = await response.json();
 
-      setPosts([...posts, ...data]);
-      setPage(page + 1);
+      setPosts((prevPosts) => [...prevPosts, ...data]);
+      setPage((prevPage) => prevPage + 1);
       if (data.length === 0) {
         setFinished(true);
       }
@@ -40,7 +40,7 @@ export default function LoadMore({ query }: { query: string }) {
     if (inView) {
       seachTitles(query, page.toString());
     }
-  }, [inView]);
+  }, [inView, query, page]);
 
   // reset the page and posts when the query changes
   useEffect(() => {
