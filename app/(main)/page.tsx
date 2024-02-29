@@ -1,7 +1,8 @@
 // Components imports
 import PreviewContainer from '@/components/PreviewContainer';
+import { Suspense } from 'react';
 
-export default async function Home({
+export default function page({
   searchParams,
 }: {
   searchParams?: {
@@ -10,5 +11,9 @@ export default async function Home({
 }) {
   const query = searchParams?.query || '';
 
-  return <PreviewContainer query={query.trim()}  />;
+  return (
+    <Suspense fallback={<h2>🌀 Loading...</h2>}>
+      <PreviewContainer query={query.trim()} />
+    </Suspense>
+  );
 }

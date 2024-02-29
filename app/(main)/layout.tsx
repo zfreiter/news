@@ -6,6 +6,7 @@ import '../globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { NextAuthProvider } from '@/components/Providers';
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,11 +25,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${inter.className} bg-gradient-to-r from-indigo-200 from-10% via-sky-200 via-30% to-emerald-200 to-90% -z-20`}
       >
         <NextAuthProvider>
-          <div className='z-30 bg-white max-w-[680px] sm:px-16 mx-auto py-4 shadow-xl flex flex-col min-h-screen px-8'>
-            <Navbar />
-            {children}
-            <Footer />
-          </div>
+          <Suspense fallback={<div>Loading...</div>}>
+            <div className='z-30 bg-white max-w-[680px] sm:px-16 mx-auto py-4 shadow-xl flex flex-col min-h-screen px-8'>
+              <Navbar />
+              {children}
+              <Footer />
+            </div>
+          </Suspense>
         </NextAuthProvider>
       </body>
     </html>

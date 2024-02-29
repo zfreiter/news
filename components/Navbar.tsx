@@ -86,7 +86,7 @@ export default function Navbar() {
         {/* SearchBar */}
         {pathName === '/' && (
           <div className='hidden min-[600px]:block'>
-            <Suspense fallback={<>placeholder</>}>
+            <Suspense fallback={<h2>🌀 Loading...</h2>}>
               <Search placeholder='Search...' />
             </Suspense>
           </div>
