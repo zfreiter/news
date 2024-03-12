@@ -27,11 +27,11 @@ export default function TiptapCommentEditor({ postId }: { postId: string }) {
     },
   });
 
-  useEffect(() => {
-    if (editor) {
-      editor.commands.focus();
-    }
-  }, [editor]);
+  // useEffect(() => {
+  //   if (editor) {
+  //     editor.commands.focus();
+  //   }
+  // }, [editor]);
 
   return (
     <>

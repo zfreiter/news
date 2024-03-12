@@ -31,10 +31,9 @@ const handleAccountDeletion = async (email: string) => {
 };
 
 export default function Account({ account }: AccountProps) {
-  console.log(account);
   return (
-    <div className='flex flex-col flex-1 mt-8'>
-      <div className=' '>
+    <div className='flex flex-col mt-8'>
+      <div className=' flex-none'>
         <h1>Account</h1>
         <p>Name: {account.name}</p>
         <p>Email: {account.email}</p>
@@ -42,7 +41,8 @@ export default function Account({ account }: AccountProps) {
         <p>Comments: {account.comments}</p>
         <p>Likes: {account.likes}</p>
       </div>
-      <div className='mt-2 '>
+
+      <div className=' flex-auto'>
         <button
           className='bg-red-500 hover:bg-red-300 px-2 py-1 text-white rounded-lg'
           onClick={(e) => handleAccountDeletion(account.email)}

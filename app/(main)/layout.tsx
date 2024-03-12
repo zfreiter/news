@@ -25,13 +25,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${inter.className} bg-gradient-to-r from-indigo-200 from-10% via-sky-200 via-30% to-emerald-200 to-90% -z-20`}
       >
         <NextAuthProvider>
-          <Suspense fallback={<div>Loading...</div>}>
-            <div className='z-30 bg-white max-w-[680px] sm:px-16 mx-auto py-4 shadow-xl flex flex-col min-h-screen px-8'>
+          <div className='z-30 bg-white max-w-[680px] sm:px-16 mx-auto py-4 shadow-xl flex flex-col min-h-screen px-8'>
+            <Suspense fallback={<div>Loading...</div>}>
               <Navbar />
-              {children}
-              <Footer />
-            </div>
-          </Suspense>
+            </Suspense>
+            <div className=' flex-auto'>{children}</div>
+            <Footer />
+          </div>
         </NextAuthProvider>
       </body>
     </html>

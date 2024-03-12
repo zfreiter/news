@@ -24,10 +24,10 @@ export async function POST(req: Request) {
         categoryName,
       },
     });
-    //console.log('New category created', newCategory);
+
     return NextResponse.json(newCategory);
   } catch (error) {
-    //console.log(error);
+    console.log(error);
     return NextResponse.json({ message: 'Error, something went wrong' }, { status: 500 });
   }
 }

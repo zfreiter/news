@@ -8,7 +8,7 @@ import prisma from '@/lib/prismadb';
 
 export async function DELETE(req: Request, { params }: { params: { commentId: string } }) {
   const session = await getServerSession(authOptions);
- 
+
   if (!session) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
@@ -21,7 +21,7 @@ export async function DELETE(req: Request, { params }: { params: { commentId: st
         id: commentId,
       },
     });
-    //revalidatePath(`/blog/[${postId}]`, 'page');
+
     return NextResponse.json(comment, { status: 200 });
   } catch (error) {
     console.log(error);
