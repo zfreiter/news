@@ -6,7 +6,7 @@ import Image from 'next/image';
 // Types imports
 import { TypePost } from '@/app/types';
 // React imports
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // Icons: Heroicons
 import { PhotoIcon } from '@heroicons/react/24/solid';
 import { TrashIcon } from '@heroicons/react/24/outline';
@@ -25,20 +25,38 @@ export default function Page({ story }: { story: TypePost }) {
   const [imageUrl, setImageUrl] = useState<string>(story.imageUrl);
   const [publicId, setPublicId] = useState<string>(story.publicId);
   const [richText, setRichText] = useState<string>(story.content);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<{
+    titleError: string;
+    categoryError: string;
+    contentError: string;
+  }>({
+    titleError: '',
+    categoryError: '',
+    contentError: '',
+  });
 
   const router = useRouter();
 
   // Handle Submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    let foundError = false;
     setLoading(true);
-    if (titleInput.trim().length === 0) {
-      setError('Title cannot be empty');
-      return;
+    if (
+      titleInput.trim().length === 0 ||
+      richText.trim().length < 8 ||
+      categoryInput.trim().length === 0
+    ) {
+      foundError = true;
+      setError({
+        titleError: titleInput.trim().length === 0 ? 'Title cannot be empty' : '',
+        categoryError: categoryInput.trim().length === 0 ? 'Category cannot be empty' : '',
+        contentError: richText.trim().length < 8 ? 'Content cannot be empty' : '',
+      });
     }
-    if (richText.trim().length === 0) {
-      setError('Content cannot be empty');
+
+    if (foundError) {
+      setLoading(false);
       return;
     }
 
@@ -52,7 +70,7 @@ export default function Page({ story }: { story: TypePost }) {
         body: JSON.stringify({
           title: titleInput,
           content: richText,
-          category: categoryInput,
+          category: categoryInput.trim().toUpperCase(),
           links: links,
           imageUrl: imageUrl,
           publicId: publicId,
@@ -125,6 +143,21 @@ export default function Page({ story }: { story: TypePost }) {
     setLoading(false);
   };
 
+  useEffect(() => {
+    setError({
+      titleError: titleInput.trim().length !== 0 ? '' : error.titleError,
+      categoryError: categoryInput.trim().length !== 0 ? '' : error.categoryError,
+      contentError: richText.trim().length > 8 ? '' : error.contentError,
+    });
+  }, [
+    titleInput,
+    richText,
+    categoryInput,
+    error.titleError,
+    error.categoryError,
+    error.contentError,
+  ]);
+
   return (
     <div role='main' className='my-8'>
       <h2 className='text-2xl font-medium mb-2'>Edit Post</h2>
@@ -139,8 +172,11 @@ export default function Page({ story }: { story: TypePost }) {
           onChange={(e) => setTitleInput(e.target.value)}
           className='border border-slate-200 mb-2 px-4 py-2 rounded-lg'
         />
+        {error && <div className='text-red-600 mb-2'>{error.titleError}</div>}
 
         <TiptapMainEditor description={richText} onChange={setRichText} />
+        {error && <div className='text-red-600 mb-2'>{error.contentError}</div>}
+
         <label htmlFor='category' className='sr-only'>
           Category
         </label>
@@ -151,6 +187,7 @@ export default function Page({ story }: { story: TypePost }) {
           onChange={(e) => setCategoryInput(e.target.value)}
           className='border border-slate-200 mb-2 px-4 py-2 rounded-lg'
         />
+        {error && <div className='text-red-600 mb-2'>{error.categoryError}</div>}
 
         <label htmlFor='links' className='sr-only'>
           links
@@ -218,13 +255,22 @@ export default function Page({ story }: { story: TypePost }) {
           </button>
         )}
 
-        <button
-          type='submit'
-          className={`mt-4 bg-blue-600 hover:bg-blue-300 text-white w-full m-auto px-4 py-2 rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed`}
-          disabled={loading}
-        >
-          Update
-        </button>
+        <div className='flex gap-x-6'>
+          <button
+            type='submit'
+            className={`mt-4 bg-blue-600 hover:bg-blue-300 text-white w-full m-auto px-4 py-2 rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed`}
+            disabled={loading}
+          >
+            Update
+          </button>
+          <button
+            className={`mt-4 border border-slate-500 hover:border-red-300 hover:bg-red-300 text-slate-500 hover:text-white w-full m-auto px-4 py-2 rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed`}
+            disabled={loading}
+            onClick={() => router.push(`/blog/${story.id}`)}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

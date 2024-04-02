@@ -50,20 +50,17 @@ export default function CreatePostForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let foundError = false;
+
     if (
       titleInput.trim().length === 0 ||
-      richText.trim().length === 0 ||
-      richText.trim().length === 17 ||
+      richText.trim().length < 8 ||
       categoryInput.trim().length === 0
     ) {
       foundError = true;
       setError({
         titleError: titleInput.trim().length === 0 ? 'Title cannot be empty' : '',
         categoryError: categoryInput.trim().length === 0 ? 'Category cannot be empty' : '',
-        contentError:
-          richText.trim().length === 0 || richText.trim().length === 17
-            ? 'Content cannot be empty'
-            : '',
+        contentError: richText.trim().length < 8 ? 'Content cannot be empty' : '',
       });
     }
 
@@ -79,7 +76,7 @@ export default function CreatePostForm() {
         body: JSON.stringify({
           title: titleInput,
           content: richText,
-          category: categoryInput,
+          category: categoryInput.trim().toUpperCase(),
           links: links,
           imageUrl: imageUrl,
           publicId: publicId,
@@ -154,8 +151,7 @@ export default function CreatePostForm() {
     setError({
       titleError: titleInput.trim().length !== 0 ? '' : error.titleError,
       categoryError: categoryInput.trim().length !== 0 ? '' : error.categoryError,
-      contentError:
-        richText.trim().length !== 0 || richText.trim().length !== 17 ? '' : error.contentError,
+      contentError: richText.trim().length > 8 ? '' : error.contentError,
     });
   }, [
     titleInput,
@@ -263,6 +259,7 @@ export default function CreatePostForm() {
               Remove Image
             </button>
           )}
+          <div className='flex gap-x-6'>
           <button
             type='submit'
             className={`mt-4 bg-blue-600 hover:bg-blue-300 text-white w-full m-auto px-4 py-2 rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed`}
@@ -270,6 +267,14 @@ export default function CreatePostForm() {
           >
             Publish
           </button>
+          <button
+            className={`mt-4 border border-slate-500 hover:border-red-300 hover:bg-red-300 text-slate-500 hover:text-white w-full m-auto px-4 py-2 rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed`}
+            disabled={loading}
+            onClick={() => router.push('/')}
+          >
+            Cancel
+          </button>
+        </div>
         </form>
       </div>
     </>

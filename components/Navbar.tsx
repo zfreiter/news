@@ -2,7 +2,7 @@
 // next imports
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 // react imports
 import { useState, useRef, useEffect, Suspense } from 'react';
 // next-auth imports
@@ -65,6 +65,9 @@ export default function Navbar() {
       document.removeEventListener('scroll', handleScroll);
     };
   }, [scrollY]);
+
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   return (
     <nav

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: 'Stories for you',
   description: 'Stories for you, written by you.',
   icons: {
-    icon: '/_next/static/media/metadata/favicon.png',
+    icon: '/favicon.ico',
   },
 };
 

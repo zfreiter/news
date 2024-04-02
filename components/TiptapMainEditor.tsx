@@ -61,7 +61,7 @@ export default function TiptapMainEditor({
   return (
     <>
       <ToolbarFull editor={editor} />
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor} required/>
     </>
   );
 }
